@@ -5,6 +5,7 @@ Ansible Role for configuring Logging on RHEL
 
 ### Requirements & Dependencies
 - Ansible >= 2.10
+- Ansible <= 2.16 when configuring remote RHEL8 Hosts
 
 #### Operating systems
 - Red Hat Enterprise Linux >= 8
