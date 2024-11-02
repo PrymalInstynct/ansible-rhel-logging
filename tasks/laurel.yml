@@ -72,14 +72,14 @@
   block:
     - name: Copy laurel selinux policy
       ansible.builtin.copy:
-        src: laurel.pp
-        dest: /tmp/
+        src: 'laurel{{ ansible_distribution_major_version }}.pp'
+        dest: /tmp/laurel/laurel.pp
         mode: '0644'
         owner: root
         group: root
 
     - name: Install laurel selinux policy
-      ansible.builtin.command: semodule -i /tmp/laurel.pp
+      ansible.builtin.command: semodule -i /tmp/laurel/laurel.pp
       register: selinux
       failed_when: selinux.rc != 0
       changed_when: false
