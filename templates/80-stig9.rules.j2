@@ -1,0 +1,296 @@
+{{ ansible_managed | comment }}
+# https://github.com/ansible-lockdown/RHEL9-STIG/blob/devel/templates/etc/audit/rules.d/audit.rules.j2
+
+########################
+# RHEL9-STIG rule 654010
+########################
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -k execpriv
+{% if ansible_userspace_bits == '64' %}
+-a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -k execpriv
+{% endif %}
+-a always,exit -F arch=b32 -S execve -C gid!=egid -F egid=0 -k execpriv
+{% if ansible_userspace_bits == '64' %}
+-a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -k execpriv
+{% endif %}
+
+########################
+# RHEL9-STIG rule 654015
+########################
+-a always,exit -F arch=b32 -S chmod,fchmod,fchmodat -F auid>=1000 -F auid!=unset -k perm_mod
+{% if ansible_userspace_bits == '64' %}
+-a always,exit -F arch=b64 -S chmod,fchmod,fchmodat -F auid>=1000 -F auid!=unset -k perm_mod
+{% endif %}
+
+########################
+# RHEL9-STIG rule 654020
+########################
+-a always,exit -F arch=b32 -S chown,fchown,fchownat,lchown -F auid>=1000 -F auid!=unset -k perm_mod
+{% if ansible_userspace_bits == '64' %}
+-a always,exit -F arch=b64 -S chown,fchown,fchownat,lchown -F auid>=1000 -F auid!=unset -k perm_mod
+{% endif %}
+
+########################
+# RHEL9-STIG rule 654025
+########################
+-a always,exit -F arch=b32 -S setxattr,fsetxattr,lsetxattr,removexattr,fremovexattr,lremovexattr -F auid>=1000 -F auid!=unset -k perm_mod
+{% if ansible_userspace_bits == '64' %}
+-a always,exit -F arch=b64 -S setxattr,fsetxattr,lsetxattr,removexattr,fremovexattr,lremovexattr -F auid>=1000 -F auid!=unset -k perm_mod
+{% endif %}
+-a always,exit -F arch=b32 -S setxattr,fsetxattr,lsetxattr,removexattr,fremovexattr,lremovexattr -F auid=0 -k perm_mod
+{% if ansible_userspace_bits == '64' %}
+-a always,exit -F arch=b64 -S setxattr,fsetxattr,lsetxattr,removexattr,fremovexattr,lremovexattr -F auid=0 -k perm_mod
+{% endif %}
+
+########################
+# RHEL9-STIG rule 654030
+########################
+-a always,exit -F path=/usr/bin/umount -F perm=x -F auid>=1000 -F auid!=unset -k privileged-mount
+
+########################
+# RHEL9-STIG rule 654035
+########################
+-a always,exit -F path=/usr/bin/chacl -F perm=x -F auid>=1000 -F auid!=unset -k perm_mod
+
+########################
+# RHEL9-STIG rule 654040
+########################
+-a always,exit -F path=/usr/bin/setfacl -F perm=x -F auid>=1000 -F auid!=unset -k perm_mod
+
+########################
+# RHEL9-STIG rule 654045
+########################
+-a always,exit -F path=/usr/bin/chcon -F perm=x -F auid>=1000 -F auid!=unset -k perm_mod
+
+########################
+# RHEL9-STIG rule 654050
+########################
+-a always,exit -F path=/usr/sbin/semanage -F perm=x -F auid>=1000 -F auid!=unset -k privileged-unix-update
+
+########################
+# RHEL9-STIG rule 654055
+########################
+-a always,exit -F path=/usr/sbin/setfiles -F perm=x -F auid>=1000 -F auid!=unset -k privileged-unix-update
+
+########################
+# RHEL9-STIG rule 654060
+########################
+-a always,exit -F path=/usr/sbin/setsebool -F perm=x -F auid>=1000 -F auid!=unset -F key=privileged
+
+########################
+# RHEL9-STIG rule 654065
+########################
+-a always,exit -F arch=b32 -S rename,unlink,rmdir,renameat,unlinkat -F auid>=1000 -F auid!=unset -k delete
+{% if ansible_userspace_bits == '64' %}
+-a always,exit -F arch=b64 -S rename,unlink,rmdir,renameat,unlinkat -F auid>=1000 -F auid!=unset -k delete
+{% endif %}
+
+########################
+# RHEL9-STIG rule 654070
+########################
+-a always,exit -F arch=b32 -S truncate,ftruncate,creat,open,openat,open_by_handle_at -F exit=-EPERM -F auid>=1000 -F auid!=unset -k perm_access
+{% if ansible_userspace_bits == '64' %}
+-a always,exit -F arch=b64 -S truncate,ftruncate,creat,open,openat,open_by_handle_at -F exit=-EPERM -F auid>=1000 -F auid!=unset -k perm_access
+{% endif %}
+-a always,exit -F arch=b32 -S truncate,ftruncate,creat,open,openat,open_by_handle_at -F exit=-EACCES -F auid>=1000 -F auid!=unset -k perm_access
+{% if ansible_userspace_bits == '64' %}
+-a always,exit -F arch=b64 -S truncate,ftruncate,creat,open,openat,open_by_handle_at -F exit=-EACCES -F auid>=1000 -F auid!=unset -k perm_access
+{% endif %}
+
+########################
+# RHEL9-STIG rule 654075
+########################
+-a always,exit -F arch=b32 -S delete_module -F auid>=1000 -F auid!=unset -k module_chng
+{% if ansible_userspace_bits == '64' %}
+-a always,exit -F arch=b64 -S delete_module -F auid>=1000 -F auid!=unset -k module_chng
+{% endif %}
+
+########################
+# RHEL9-STIG rule 654080
+########################
+-a always,exit -F arch=b32 -S init_module,finit_module -F auid>=1000 -F auid!=unset -k module_chng
+{% if ansible_userspace_bits == '64' %}
+-a always,exit -F arch=b64 -S init_module,finit_module -F auid>=1000 -F auid!=unset -k module_chng
+{% endif %}
+
+########################
+# RHEL9-STIG rule 654085
+########################
+-a always,exit -F path=/usr/bin/chage -F perm=x -F auid>=1000 -F auid!=unset -k privileged-chage
+
+########################
+# RHEL9-STIG rule 654090
+########################
+-a always,exit -F path=/usr/bin/chsh -F perm=x -F auid>=1000 -F auid!=unset -k priv_cmd
+
+########################
+# RHEL9-STIG rule 654095
+########################
+-a always,exit -F path=/usr/bin/crontab -F perm=x -F auid>=1000 -F auid!=unset -k privileged-crontab
+
+########################
+# RHEL9-STIG rule 654100
+########################
+-a always,exit -F path=/usr/bin/gpasswd -F perm=x -F auid>=1000 -F auid!=unset -k privileged-gpasswd
+
+########################
+# RHEL9-STIG rule 654105
+########################
+-a always,exit -F path=/usr/bin/kmod -F perm=x -F auid>=1000 -F auid!=unset -k modules
+
+########################
+# RHEL9-STIG rule 654110
+########################
+-a always,exit -F path=/usr/bin/newgrp -F perm=x -F auid>=1000 -F auid!=unset -k priv_cmd
+
+########################
+# RHEL9-STIG rule 654115
+########################
+-a always,exit -F path=/usr/sbin/pam_timestamp_check -F perm=x -F auid>=1000 -F auid!=unset -k privileged-pam_timestamp_check
+
+########################
+# RHEL9-STIG rule 654120
+########################
+-a always,exit -F path=/usr/bin/passwd -F perm=x -F auid>=1000 -F auid!=unset -k privileged-passwd
+
+########################
+# RHEL9-STIG rule 654125
+########################
+-a always,exit -F path=/usr/sbin/postdrop -F perm=x -F auid>=1000 -F auid!=unset -k privileged-unix-update
+
+########################
+# RHEL9-STIG rule 654130
+########################
+-a always,exit -F path=/usr/sbin/postqueue -F perm=x -F auid>=1000 -F auid!=unset -k privileged-unix-update
+
+########################
+# RHEL9-STIG rule 654135
+########################
+-a always,exit -F path=/usr/bin/ssh-agent -F perm=x -F auid>=1000 -F auid!=unset -k privileged-ssh
+
+########################
+# RHEL9-STIG rule 654140
+########################
+-a always,exit -F path=/usr/libexec/openssh/ssh-keysign -F perm=x -F auid>=1000 -F auid!=unset -k privileged-ssh
+
+########################
+# RHEL9-STIG rule 654145
+########################
+-a always,exit -F path=/usr/bin/su -F perm=x -F auid>=1000 -F auid!=unset -k privileged-priv_change
+
+########################
+# RHEL9-STIG rule 654150
+########################
+-a always,exit -F path=/usr/bin/sudo -F perm=x -F auid>=1000 -F auid!=unset -k priv_cmd
+
+########################
+# RHEL9-STIG rule 654155
+########################
+-a always,exit -F path=/usr/bin/sudoedit -F perm=x -F auid>=1000 -F auid!=unset -k priv_cmd
+
+########################
+# RHEL9-STIG rule 654160
+########################
+-a always,exit -F path=/usr/sbin/unix_chkpwd -F perm=x -F auid>=1000 -F auid!=unset -k privileged-unix-update
+
+########################
+# RHEL9-STIG rule 654165
+########################
+-a always,exit -F path=/usr/sbin/unix_update -F perm=x -F auid>=1000 -F auid!=unset -k privileged-unix-update
+
+########################
+# RHEL9-STIG rule 654170
+########################
+-a always,exit -F path=/usr/sbin/userhelper -F perm=x -F auid>=1000 -F auid!=unset -k privileged-unix-update
+
+########################
+# RHEL9-STIG rule 654175
+########################
+-a always,exit -F path=/usr/sbin/usermod -F perm=x -F auid>=1000 -F auid!=unset -k privileged-usermod
+
+########################
+# RHEL9-STIG rule 654180
+########################
+-a always,exit -F path=/usr/bin/mount -F perm=x -F auid>=1000 -F auid!=unset -k privileged-mount
+
+########################
+# RHEL9-STIG rule 654185
+########################
+-a always,exit -F path=/usr/sbin/init -F perm=x -F auid>=1000 -F auid!=unset -k privileged-init
+
+########################
+# RHEL9-STIG rule 654190
+########################
+-a always,exit -F path=/usr/sbin/poweroff -F perm=x -F auid>=1000 -F auid!=unset -k privileged-poweroff
+
+########################
+# RHEL9-STIG rule 654195
+########################
+-a always,exit -F path=/usr/sbin/reboot -F perm=x -F auid>=1000 -F auid!=unset -k privileged-reboot
+
+########################
+# RHEL9-STIG rule 654200
+########################
+-a always,exit -F path=/usr/sbin/shutdown -F perm=x -F auid>=1000 -F auid!=unset -k privileged-shutdown
+
+########################
+# RHEL9-STIG rule 654205
+########################
+-a always,exit -F arch=b32 -S umount -F auid>=1000 -F auid!=unset -k perm_mod
+
+########################
+# RHEL9-STIG rule 654210
+########################
+-a always,exit -F arch=b32 -S umount2 -F auid>=1000 -F auid!=unset -k perm_mod
+{% if ansible_userspace_bits == '64' %}
+-a always,exit -F arch=b64 -S umount2 -F auid>=1000 -F auid!=unset -k perm_mod
+{% endif %}
+
+########################
+# RHEL9-STIG rule 654215
+########################
+-w /etc/sudoers -p wa -k identity
+
+########################
+# RHEL9-STIG rule 654220
+########################
+-w /etc/sudoers.d/ -p wa -k identity
+
+########################
+# RHEL9-STIG rule 654225
+########################
+-w /etc/group -p wa -k identity
+
+########################
+# RHEL9-STIG rule 654230
+########################
+-w /etc/gshadow -p wa -k identity
+
+########################
+# RHEL9-STIG rule 654235
+########################
+-w /etc/security/opasswd -p wa -k identity
+
+########################
+# RHEL9-STIG rule 654240
+########################
+-w /etc/passwd -p wa -k identity
+
+########################
+# RHEL9-STIG rule 654245
+########################
+-w /etc/shadow -p wa -k identity
+
+########################
+# RHEL9-STIG rule 654250
+########################
+-w /var/log/faillock -p wa -k logins
+
+########################
+# RHEL9-STIG rule 654255
+########################
+-w /var/log/lastlog -p wa -k logins
+
+########################
+# RHEL9-STIG rule 654260
+########################
+-w /var/log/tallylog -p wa -k logins

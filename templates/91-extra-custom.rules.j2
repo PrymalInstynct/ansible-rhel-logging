@@ -1,0 +1,7 @@
+{{ ansible_managed | comment }}
+##############
+# Custom Rules
+##############
+{% for rule in auditd_custom_rules %}
+{{ rule }}
+{% endfor %}

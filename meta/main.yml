@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  role_name: rhel-logging
+  author: Chad Zimmerman
+  description: Red Hat Enterprise Linux Logging install and configuration
+  license: MIT
+  min_ansible_version: '2.0'
+  platforms:
+    - name: EL
+      versions:
+        - '7'
+        - '8'
+        - '9'
+  galaxy_tags:
+    - system
+    - security
+dependencies: []

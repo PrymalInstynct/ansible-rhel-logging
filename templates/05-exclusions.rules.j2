@@ -1,0 +1,24 @@
+{{ ansible_managed | comment }}
+#####################
+# Standard Exclusions
+#####################
+{% for rule in auditd_exclusion_rules_32 %}
+{{ rule }}
+{% endfor %}
+{% if ansible_userspace_bits == '64' %}
+{% for rule in auditd_exclusion_rules_64 %}
+{{ rule }}
+{% endfor %}
+{% endif %}
+
+#######################
+# Executable Exclusions
+#######################
+{% for rule in auditd_exclusion_rules_exe_32 %}
+{{ rule }}
+{% endfor %}
+{% if ansible_userspace_bits == '64' %}
+{% for rule in auditd_exclusion_rules_exe_64 %}
+{{ rule }}
+{% endfor %}
+{% endif %}

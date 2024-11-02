@@ -1,0 +1,14 @@
+---
+- name: Augenrules  # noqa no-changed-when
+  ansible.builtin.command: augenrules
+
+- name: Restart auditd
+  ansible.builtin.service: 
+    name: auditd
+    state: restarted
+    use: service
+
+- name: Restart rsyslog
+  ansible.builtin.service:
+    name: rsyslog
+    state: restarted

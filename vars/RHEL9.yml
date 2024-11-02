@@ -1,0 +1,15 @@
+auditd_rules_templates:
+  - 01-start
+  - 05-exclusions
+  - 10-audit-self
+  - 40-base
+  - 50-module-load
+  - 60-neo23x0
+  - 70-rootcmd
+  - 80-stig9
+  - 90-extra
+  - 91-extra-custom
+  - 99-end
+
+# Rules to Load at the end
+auditd_custom_rules: []

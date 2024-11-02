@@ -1,0 +1,22 @@
+{{ ansible_managed | comment }}
+######################
+# Audit the audit logs
+######################
+-w /var/log/audit/ -k auditlog
+
+######################
+## Audit configuration
+######################
+## Modifications to audit configuration that occur while the audit (check your paths)
+-w /etc/audit/ -p wa -k auditconfig
+-w /etc/audisp/ -p wa -k auditconfig
+{% if auditd_laurel_enable | bool %}
+-w /etc/laurel/ -p wa -k auditconfig
+{% endif %}
+
+###########################################
+# Monitor for use of audit management tools
+###########################################
+# Check your paths
+-w /sbin/auditctl -p x -k audittools
+-w /sbin/auditd -p x -k audittools

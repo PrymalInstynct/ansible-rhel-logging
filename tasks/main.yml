@@ -1,0 +1,31 @@
+---
+- name: Include OS Specific Variables
+  ansible.builtin.include_vars: "{{ ansible_distribution }}{{ ansible_distribution_major_version }}.yml"
+
+- name: Install Role Dependencies
+  ansible.builtin.package:
+    name:
+      - audit
+      - audispd-plugins
+      - rsyslog
+      - logrotate
+      - curl
+      - jq
+      - ca-certificates
+    state: present
+    update_cache: true
+
+- name: Include auditd tasks
+  ansible.builtin.include_tasks: auditd.yml
+  when:
+    - auditd_enable | bool
+    - ansible_system == 'Linux'
+    - ansible_architecture == 'x86_64'
+
+- name: Include laurel tasks
+  ansible.builtin.include_tasks: laurel.yml
+  when:
+    - auditd_enable | bool
+    - auditd_laurel_enable | bool
+    - ansible_system == 'Linux'
+    - ansible_architecture == 'x86_64'
