@@ -33,20 +33,6 @@
   notify:
     - Restart auditd
 
-- name: Check if grub is present
-  ansible.builtin.stat:
-    path: /etc/default/grub
-  register: has_grub
-
-- name: Enable Auditing in Grub for Processes That Start Prior to Auditd
-  ansible.builtin.replace:
-    dest: /etc/default/grub
-    regexp: '^GRUB_CMDLINE_LINUX="(.*)"'
-    replace: 'GRUB_CMDLINE_LINUX="\1 audit=1 audit_backlog_limit=8192"'
-  when:
-    - has_grub.stat is defined
-    - has_grub.stat.exists
-
 - name: Start and Enable auditd
   ansible.builtin.service:
     name: auditd
