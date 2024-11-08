@@ -17,8 +17,8 @@ auditd_log_tmp: true
 auditd_log_etc: true
 auditd_rule_rootcmd_all: true
 auditd_log_all_execve: true
-auditd_log_all_socket: true
-auditd_log_all_connect: true
+auditd_log_all_socket: false
+auditd_log_all_connect: false
 
 auditd_sensitive_files:
   ## Attention! files/folders must exist
@@ -61,10 +61,10 @@ auditd_exclusion_rules_64:
 # Use the 'exe' filter to exclue specific behavior
 auditd_exclusion_rules_exe_32:
   # Example Root executing the sleep application
-  - '-a never,exit -F arch=b32 uid=0 -S execve -F exe=/bin/sleep'
+  - '-a never,exit -F arch=b32 -S execve -F euid=0 -F exe=/bin/sleep'
 auditd_exclusion_rules_exe_64:
   # Example Root executing the sleep application
-  - '-a never,exit -F arch=b64 uid=0 -S execve -F exe=/bin/sleep'
+  - '-a never,exit -F arch=b64 -S execve -F euid=0 -F exe=/bin/sleep'
 
 # Rules to Load at the end
 auditd_custom_rules: []
