@@ -3,7 +3,7 @@
   ansible.builtin.command: augenrules
 
 - name: Restart auditd
-  ansible.builtin.service: 
+  ansible.builtin.service:
     name: auditd
     state: restarted
     use: service
